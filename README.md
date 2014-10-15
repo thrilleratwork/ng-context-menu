@@ -126,6 +126,19 @@ that will be called whenever the context menu is closed.
 </div>
 ```
 
+#### Margin bottom
+
+Add the following attribute to the `context-menu` element: `context-menu-margin-bottom` to keep the context menu
+away from the bottom of the page at least by this attribute value in pixels.
+
+```html
+<div context-menu context-menu-margin-bottom="10">
+<!-- ... -->
+</div>
+```
+
+---
+
 ---
 
 I hope you find this useful!  
