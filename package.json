@@ -27,5 +27,8 @@
     "angular"
   ],
   "author": "Ian Kennington Walter (http://ianvonwalter.com)",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "jasmine-reporters": "^1.0.1"
+  }
 }

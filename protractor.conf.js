@@ -6,7 +6,13 @@ exports.config = {
   chromeDriver: gulpSelenium.chromeDriverPath,
   //seleniumAddress: 'http://localhost:4444/wd/hub', // Using JAR instead of address
   capabilities: {
-    'browserName': 'phantomjs'
+    browserName: 'chrome'
+  },
+  onPrepare: function() {
+    require('jasmine-reporters');
+    jasmine.getEnv().addReporter(
+      new jasmine.JUnitXmlReporter('test-results', true, true)
+    );
   },
   specs: ['test/ui/**/*.spec.js']
 };

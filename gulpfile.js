@@ -22,6 +22,7 @@ program
   .option('-t, --tests [glob]', 'Specify which tests to run')
   .option('-b, --browsers <items>', 'Specify which browsers to run on', list)
   .option('-r, --reporters <items>', 'Specify which reporters to use', list)
+  .option('-p, --port [port]', 'Specify which port to use', 8080)
   .parse(process.argv);
 
 gulp.task('lint', function () {
@@ -52,7 +53,8 @@ gulp.task('connect', function() {
   }
 
   connect.server({
-    livereload: mode === WATCH_MODE
+    livereload: mode === WATCH_MODE,
+    port: program.port
   });
 });
 
@@ -61,8 +63,8 @@ gulp.task('protractor', function(done) {
     .pipe(protractor({
       configFile: 'protractor.conf.js',
       args: [
-        '--baseUrl', 'http://127.0.0.1:8080',
-        '--browser', program.browsers ? program.browsers[0] : 'phantomjs'
+        '--baseUrl', 'http://127.0.0.1:' + program.port,
+        '--browser', program.browsers ? program.browsers[0] : 'chrome'
       ]
     }))
     .on('end', function() {
