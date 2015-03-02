@@ -28,7 +28,7 @@ var app = angular.module('menu-demo', ['ngRoute', 'ng-context-menu'])
 ```
 
 #### Step 3: Add the context-menu directive to a DOM element
-
+Note that the `data-target` attribute value must match the `id` of the menu in the next step.
 ```html
 <div context-menu class="panel panel-default position-fixed"
      data-target="menu-{{ $index }}"
