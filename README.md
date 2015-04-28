@@ -1,9 +1,7 @@
 # [ng-context-menu](http://ianwalter.github.io/ng-context-menu/)
 *An AngularJS directive to display a context menu when a right-click event is triggered*
 
-[![Code Climate](https://codeclimate.com/github/ianwalter/ng-context-menu.png)](https://codeclimate.com/github/ianwalter/ng-context-menu)
-
-[ ![Codeship Status for ianwalter/ng-boilerplate](https://www.codeship.io/projects/0c2504d0-1b2a-0132-844a-4292efa71b6f/status)](https://www.codeship.io/projects/31717)
+[![Code Climate](https://codeclimate.com/github/ianwalter/ng-context-menu.png)](https://codeclimate.com/github/ianwalter/ng-context-menu) [![Circle CI](https://circleci.com/gh/ianwalter/ng-context-menu.svg?style=svg)](https://circleci.com/gh/ianwalter/ng-context-menu)
 
 This project was built using [ng-boilerplate](https://github.com/ianwalter/ng-boilerplate)!
 
