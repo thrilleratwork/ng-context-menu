@@ -1,5 +1,5 @@
 /**
- * ng-context-menu - v1.0.1 - An AngularJS directive to display a context menu
+ * ng-context-menu - v1.0.2 - An AngularJS directive to display a context menu
  * when a right-click event is triggered
  *
  * @author Ian Kennington Walter (http://ianvonwalter.com)
@@ -24,7 +24,8 @@
           scope: {
             'callback': '&contextMenu',
             'disabled': '&contextMenuDisabled',
-            'closeCallback': '&contextMenuClose'
+            'closeCallback': '&contextMenuClose',
+            'marginBottom': '@contextMenuMarginBottom'
           },
           link: function($scope, $element, $attrs) {
             var opened = false;
@@ -51,7 +52,8 @@
               }
 
               if (totalHeight > docHeight) {
-                top = top - (totalHeight - docHeight);
+                var marginBottom = $scope.marginBottom || 0;
+                top = top - (totalHeight - docHeight) - marginBottom;
               }
 
               menuElement.css('top', top + 'px');

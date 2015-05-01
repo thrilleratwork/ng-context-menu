@@ -3,6 +3,7 @@
 <div ng-repeat="panel in panels">
   <div context-menu="onRightClick(message)"
        context-menu-close="onClose(closeMessage)"
+       context-menu-margin-bottom="10"
        id="panel-{{ $index }}"
        class="panel panel-default"
        data-target="menu-{{ $index }}"
