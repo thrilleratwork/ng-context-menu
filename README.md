@@ -2,7 +2,7 @@
 *An AngularJS directive to display a context menu when a right-click event is triggered*
 
 ## Looking for a new owner/maintainer  
-> Please email me (my email is on my profile page: https://github.com/ianwalter)
+> Please email me at public@iankwalter.com
 
 ---
 
