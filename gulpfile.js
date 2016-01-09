@@ -7,6 +7,8 @@ var gulp = require('gulp'),
     protractor = require("gulp-protractor").protractor,
     program = require('commander'),
     stylish = require('jshint-stylish'),
+    path = require('path'),
+    child_process = require('child_process'),
     debug = false,
     WATCH_MODE = 'watch',
     RUN_MODE = 'run';
@@ -15,6 +17,13 @@ var mode = RUN_MODE;
 
 function list(val) {
   return val.split(',');
+}
+
+function getProtractorBinary(binaryName){
+  var winExt = /^win/.test(process.platform)? '.cmd' : '';
+  var pkgPath = require.resolve('protractor');
+  var protractorDir = path.resolve(path.join(path.dirname(pkgPath), '..', 'bin'));
+  return path.join(protractorDir, '/'+binaryName+winExt);
 }
 
 program
@@ -58,6 +67,12 @@ gulp.task('connect', function() {
   });
 });
 
+gulp.task('protractor-install', function(done){
+  child_process.spawn(getProtractorBinary('webdriver-manager'), ['update'], {
+    stdio: 'inherit'
+  }).once('close', done);
+});
+
 gulp.task('protractor', function(done) {
   gulp.src(["./src/tests/*.js"])
     .pipe(protractor({
@@ -99,9 +114,6 @@ function watch() {
   jsWatcher.on('change', changeNotification);
 }
 
-// Removing protractor from default task until phantomjs issue is fixed
-// https://github.com/ariya/phantomjs/issues/11429
-//gulp.task('default', ['watch-mode', 'js', 'lint', 'protractor'], watch);
-gulp.task('default', ['watch-mode', 'js', 'lint'], watch);
+gulp.task('default', ['watch-mode', 'js', 'lint', 'test'], watch);
 gulp.task('server', ['connect', 'default']);
-gulp.task('test', ['connect', 'protractor']);
+gulp.task('test', ['connect', 'protractor-install', 'protractor']);
