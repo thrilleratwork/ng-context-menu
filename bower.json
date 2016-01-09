@@ -13,7 +13,7 @@
     "Ian Kennington Walter (http://ianvonwalter.com)"
   ],
   "license": "MIT",
-  "homepage": "http://ianwalter.github.io/ng-context-menu/",
+  "homepage": "https://talis.github.io/ng-context-menu/",
   "main": [
     "dist/ng-context-menu.js"
   ],
