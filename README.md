@@ -7,7 +7,7 @@ for their contributions.
 
 ---
 
-[![Code Climate](https://codeclimate.com/github/ianwalter/ng-context-menu.png)](https://codeclimate.com/github/ianwalter/ng-context-menu) [![Circle CI](https://circleci.com/gh/ianwalter/ng-context-menu.svg?style=svg)](https://circleci.com/gh/ianwalter/ng-context-menu)
+[![Code Climate](https://codeclimate.com/github/ianwalter/ng-context-menu.png)](https://codeclimate.com/github/ianwalter/ng-context-menu) [![Build Status](https://travis-ci.org/talis/ng-context-menu.svg)](https://travis-ci.org/talis/ng-context-menu)
 
 ---
 

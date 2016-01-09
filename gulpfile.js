@@ -79,7 +79,7 @@ gulp.task('protractor', function(done) {
       configFile: 'protractor.conf.js',
       args: [
         '--baseUrl', 'http://127.0.0.1:' + program.port,
-        '--browser', program.browsers ? program.browsers[0] : 'chrome'
+        '--browser', program.browsers ? program.browsers[0] : 'firefox'
       ]
     }))
     .on('end', function() {
@@ -114,6 +114,6 @@ function watch() {
   jsWatcher.on('change', changeNotification);
 }
 
-gulp.task('default', ['watch-mode', 'js', 'lint', 'test'], watch);
+gulp.task('default', ['watch-mode', 'js', 'lint', 'protractor-install'], watch);
 gulp.task('server', ['connect', 'default']);
-gulp.task('test', ['connect', 'protractor-install', 'protractor']);
+gulp.task('test', ['connect', 'protractor']);
