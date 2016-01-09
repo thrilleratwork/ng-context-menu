@@ -76,7 +76,7 @@ Customize the menu to your needs. It may look something like:
       </a>
     </li>
     <li>
-      <a href="https://github.com/ianwalter/ng-context-menu"
+      <a href="https://github.com/talis/ng-context-menu"
          role="menuitem"
          tabindex="-1">
          ng-context-menu on GitHub
