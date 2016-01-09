@@ -1,8 +1,9 @@
 # [ng-context-menu](http://ianwalter.github.io/ng-context-menu/)
 *An AngularJS directive to display a context menu when a right-click event is triggered*
 
-## Looking for a new owner/maintainer  
-> Please email me at public@iankwalter.com
+This repository was originally created and maintained by @ianwalter.
+Many thanks to Ian and [others](https://github.com/talis/ng-context-menu/graphs/contributors) 
+for their contributions.
 
 ---
 
@@ -142,5 +143,5 @@ away from the bottom of the page at least by this attribute value in pixels.
 
 ---
 
-I hope you find this useful!  
-⌁ [Ian](http://ianvonwalter.com)
+We hope you find this useful!  
+⌁ [Talis](http://engineering.talis.com/)
