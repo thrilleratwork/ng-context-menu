@@ -1,12 +1,11 @@
 var gulp = require('gulp'),
     concat = require('gulp-concat'),
     uglify = require('gulp-uglify'),
-    jshint = require('gulp-jshint'),
+    eslint = require('gulp-eslint'),
     rename = require('gulp-rename'),
     connect = require('gulp-connect'),
     protractor = require("gulp-protractor").protractor,
     program = require('commander'),
-    stylish = require('jshint-stylish'),
     path = require('path'),
     child_process = require('child_process'),
     debug = false,
@@ -36,8 +35,9 @@ program
 
 gulp.task('lint', function () {
   gulp.src('src/**/*.js')
-    .pipe(jshint('.jshintrc'))
-    .pipe(jshint.reporter(stylish));
+    .pipe(eslint())
+    .pipe(eslint.format())
+    .pipe(eslint.failAfterError());
 });
 
 gulp.task('js', function() {
@@ -116,4 +116,4 @@ function watch() {
 
 gulp.task('default', ['watch-mode', 'js', 'lint', 'protractor-install'], watch);
 gulp.task('server', ['connect', 'default']);
-gulp.task('test', ['connect', 'protractor']);
+gulp.task('test', ['lint', 'connect', 'protractor']);
