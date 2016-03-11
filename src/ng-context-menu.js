@@ -1,5 +1,5 @@
 /**
- * ng-context-menu - v1.0.2 - An AngularJS directive to display a context menu
+ * ng-context-menu - v1.0.3 - An AngularJS directive to display a context menu
  * when a right-click event is triggered
  *
  * @author Ian Kennington Walter (http://ianvonwalter.com)
@@ -40,12 +40,26 @@
                   (doc.clientTop || 0),
                 elementWidth = menuElement[0].scrollWidth,
                 elementHeight = menuElement[0].scrollHeight;
+              var pageX;
+              var pageY;
+              // browser compatibility fix for the click location
+              if (event.pageX || event.pageY) {
+                // use pageX and pageY when available (modern browsers)
+                pageX = event.pageX;
+                pageY = event.pageY;
+              } else {
+                // calculate pageX and pageY when they do not exist
+                // (IE8 and generated events in later versions of IE)
+                var docBody = $document[0].body;
+                pageX = event.clientX + docBody.scrollLeft + doc.scrollLeft;
+                pageY = event.clientY + docBody.scrollTop + doc.scrollTop;
+              }
               var docWidth = doc.clientWidth + docLeft,
                 docHeight = doc.clientHeight + docTop,
-                totalWidth = elementWidth + event.pageX,
-                totalHeight = elementHeight + event.pageY,
-                left = Math.max(event.pageX - docLeft, 0),
-                top = Math.max(event.pageY - docTop, 0);
+                totalWidth = elementWidth + pageX,
+                totalHeight = elementHeight + pageY,
+                left = Math.max(pageX - docLeft, 0),
+                top = Math.max(pageY - docTop, 0);
 
               if (totalWidth > docWidth) {
                 left = left - (totalWidth - docWidth);
@@ -80,7 +94,6 @@
                   document.getElementById($attrs.target)
                 );
                 ContextMenuService.element = event.target;
-                //console.log('set', ContextMenuService.element);
 
                 event.preventDefault();
                 event.stopPropagation();
@@ -94,7 +107,6 @@
             });
 
             function handleKeyUpEvent(event) {
-              //console.log('keyup');
               if (!$scope.disabled() && opened && event.keyCode === 27) {
                 $scope.$apply(function() {
                   close(ContextMenuService.menuElement);
@@ -120,7 +132,6 @@
             $document.bind('contextmenu', handleClickEvent);
 
             $scope.$on('$destroy', function() {
-              //console.log('destroy');
               $document.unbind('keyup', handleKeyUpEvent);
               $document.unbind('click', handleClickEvent);
               $document.unbind('contextmenu', handleClickEvent);
