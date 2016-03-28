@@ -1,47 +1,68 @@
 /**
- * ng-context-menu - v1.0.3 - An AngularJS directive to display a context menu
+ * ng-context-menu - v1.0.4 - An AngularJS directive to display a context menu
  * when a right-click event is triggered
  *
  * @author Ian Kennington Walter (http://ianvonwalter.com)
  */
-(function(angular) {
+(function init(angular) {
   'use strict';
 
   angular
     .module('ng-context-menu', [])
-    .factory('ContextMenuService', function() {
+    .factory('ContextMenuService', function contextMenuFactory() {
+      var element = null;
+      var menuElement = null;
       return {
-        element: null,
-        menuElement: null
+        getElement: function getElement() {
+          return element;
+        },
+        setElement: function setElement(newElement) {
+          element = newElement;
+        },
+        getMenuElement: function getMenuElement() {
+          return menuElement;
+        },
+        setMenuElement: function setMenuElement(newMenuElement) {
+          menuElement = newMenuElement;
+        },
       };
     })
     .directive('contextMenu', [
       '$document',
       'ContextMenuService',
-      function($document, ContextMenuService) {
+      function contextMenuFactory($document, ContextMenuService) {
         return {
           restrict: 'A',
           scope: {
-            'callback': '&contextMenu',
-            'disabled': '&contextMenuDisabled',
-            'closeCallback': '&contextMenuClose',
-            'marginBottom': '@contextMenuMarginBottom'
+            callback: '&contextMenu',
+            disabled: '&contextMenuDisabled',
+            closeCallback: '&contextMenuClose',
+            marginBottom: '@contextMenuMarginBottom',
           },
-          link: function($scope, $element, $attrs) {
+          link: function contextMenuLink($scope, $element, $attrs) {
             var opened = false;
 
             function open(event, menuElement) {
-              menuElement.addClass('open');
-
               var doc = $document[0].documentElement;
               var docLeft = (window.pageXOffset || doc.scrollLeft) -
-                  (doc.clientLeft || 0),
-                docTop = (window.pageYOffset || doc.scrollTop) -
-                  (doc.clientTop || 0),
-                elementWidth = menuElement[0].scrollWidth,
-                elementHeight = menuElement[0].scrollHeight;
+                  (doc.clientLeft || 0);
+              var docTop = (window.pageYOffset || doc.scrollTop) -
+                  (doc.clientTop || 0);
+              var elementWidth = menuElement[0].scrollWidth;
+              var elementHeight = menuElement[0].scrollHeight;
               var pageX;
               var pageY;
+              var docBody = $document[0].body;
+              var docWidth = doc.clientWidth + docLeft;
+              var docHeight = doc.clientHeight + docTop;
+              var totalWidth;
+              var totalHeight;
+              var left;
+              var top;
+              var marginBottom = $scope.marginBottom || 0;
+
+              menuElement.addClass('open');
+
               // browser compatibility fix for the click location
               if (event.pageX || event.pageY) {
                 // use pageX and pageY when available (modern browsers)
@@ -50,23 +71,20 @@
               } else {
                 // calculate pageX and pageY when they do not exist
                 // (IE8 and generated events in later versions of IE)
-                var docBody = $document[0].body;
                 pageX = event.clientX + docBody.scrollLeft + doc.scrollLeft;
                 pageY = event.clientY + docBody.scrollTop + doc.scrollTop;
               }
-              var docWidth = doc.clientWidth + docLeft,
-                docHeight = doc.clientHeight + docTop,
-                totalWidth = elementWidth + pageX,
-                totalHeight = elementHeight + pageY,
-                left = Math.max(pageX - docLeft, 0),
-                top = Math.max(pageY - docTop, 0);
+
+              totalWidth = elementWidth + pageX;
+              totalHeight = elementHeight + pageY;
+              left = Math.max(pageX - docLeft, 0);
+              top = Math.max(pageY - docTop, 0);
 
               if (totalWidth > docWidth) {
                 left = left - (totalWidth - docWidth);
               }
 
               if (totalHeight > docHeight) {
-                var marginBottom = $scope.marginBottom || 0;
                 top = top - (totalHeight - docHeight) - marginBottom;
               }
 
@@ -85,31 +103,31 @@
               opened = false;
             }
 
-            $element.bind('contextmenu', function(event) {
+            $element.bind('contextmenu', function contextMenuBind(event) {
               if (!$scope.disabled()) {
-                if (ContextMenuService.menuElement !== null) {
-                  close(ContextMenuService.menuElement);
+                if (ContextMenuService.getMenuElement() !== null) {
+                  close(ContextMenuService.getMenuElement());
                 }
-                ContextMenuService.menuElement = angular.element(
+                ContextMenuService.setMenuElement(angular.element(
                   document.getElementById($attrs.target)
-                );
-                ContextMenuService.element = event.target;
+                ));
+                ContextMenuService.setElement(event.target);
 
                 event.preventDefault();
                 event.stopPropagation();
-                $scope.$apply(function() {
+                $scope.$apply(function callbackWithEvent() {
                   $scope.callback({ $event: event });
                 });
-                $scope.$apply(function() {
-                  open(event, ContextMenuService.menuElement);
+                $scope.$apply(function openContextMenu() {
+                  open(event, ContextMenuService.getMenuElement());
                 });
               }
             });
 
             function handleKeyUpEvent(event) {
               if (!$scope.disabled() && opened && event.keyCode === 27) {
-                $scope.$apply(function() {
-                  close(ContextMenuService.menuElement);
+                $scope.$apply(function closeContextMenu() {
+                  close(ContextMenuService.getMenuElement());
                 });
               }
             }
@@ -118,9 +136,9 @@
               if (!$scope.disabled() &&
                 opened &&
                 (event.button !== 2 ||
-                  event.target !== ContextMenuService.element)) {
-                $scope.$apply(function() {
-                  close(ContextMenuService.menuElement);
+                  event.target !== ContextMenuService.getElement())) {
+                $scope.$apply(function closeContextMenu() {
+                  close(ContextMenuService.getMenuElement());
                 });
               }
             }
@@ -131,13 +149,13 @@
             $document.bind('click', handleClickEvent);
             $document.bind('contextmenu', handleClickEvent);
 
-            $scope.$on('$destroy', function() {
+            $scope.$on('$destroy', function removeBindings() {
               $document.unbind('keyup', handleKeyUpEvent);
               $document.unbind('click', handleClickEvent);
               $document.unbind('contextmenu', handleClickEvent);
             });
-          }
+          },
         };
-      }
+      },
     ]);
-})(angular);
+})(window.angular);
