@@ -25,7 +25,8 @@
             'callback': '&contextMenu',
             'disabled': '&contextMenuDisabled',
             'closeCallback': '&contextMenuClose',
-            'marginBottom': '@contextMenuMarginBottom'
+            'marginBottom': '@contextMenuMarginBottom',
+            'callbackData': '=contextMenuData'
           },
           link: function($scope, $element, $attrs) {
             var opened = false;
@@ -72,11 +73,15 @@
 
               menuElement.css('top', top + 'px');
               menuElement.css('left', left + 'px');
+              menuElement.removeClass('hide');
               opened = true;
             }
 
             function close(menuElement) {
-              menuElement.removeClass('open');
+              if (menuElement) {
+                menuElement.addClass('hide');
+              }
+
 
               if (opened) {
                 $scope.closeCallback();
@@ -98,7 +103,7 @@
                 event.preventDefault();
                 event.stopPropagation();
                 $scope.$apply(function() {
-                  $scope.callback({ $event: event });
+                  $scope.callback({ $event: event, data: $scope.callbackData });
                 });
                 $scope.$apply(function() {
                   open(event, ContextMenuService.menuElement);
